@@ -40,21 +40,125 @@
     // Put your code here!
     ///////////////////////////
 
-    
+    function getRandomIntInclusive(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+      //The maximum is inclusive and the minimum is inclusive
+    }
+
+    function LivingThing(monsterName, monsterHealth)  {
+      let name = monsterName;
+      let health = monsterHealth;
+
+      this.isAlive = function() {
+        if (health > 0) {
+          return true
+        }
+        else {
+          return false
+        }
+      }
+
+// getter for name
+      this.getName = function() {
+        return name;
+      }
+
+// getter for health
+      this.getHealth = function() {
+        return health;
+      }
+
+      this.setHealth = function(newHealth) {
+        health = newHealth;
+      }
+
+    }
+
+    function Hero(heroName, heroHealth) {
+
+      LivingThing.call(this, heroName, heroHealth)
+
+      this.attack = function(monster) {
+
+        // generating random numbers - function "getRandomIntInclusive" is above - downloaded from google
+        let heroDamage = getRandomIntInclusive(0,10);
+        let monsterDamage = getRandomIntInclusive(0,10);
+
+
+        // decrease the health of the living thing with a randomly generated number
+
+        monster.setHealth(monster.getHealth() - monsterDamage);
+
+        // decrease the health of the hero (this)  with a randomly generated number
+        this.setHealth(this.getHealth() - heroDamage);
+
+        console.log(this.getName() + " took " + heroDamage + " damage.");
+        console.log(monster.getName() + " took " + monsterDamage + " damage.");
+      }
+
+      this.fight = function(arrayOfMonsters) {
+
+        for (var i = 0; i < arrayOfMonsters.length; i++) {
+
+          while (this.isAlive() && arrayOfMonsters[i].isAlive()) {
+            this.attack(arrayOfMonsters[i])
+
+            if (this.isAlive() ==false) {
+              break;
+            }
+          }
+
+
+
+          // if (arrayOfMonsters[i].isAlive() == false) {
+          //   continue;
+          // }
+          //
+          // if (this.isAlive() == false) {
+          //   break;
+          // }
+          //
+          // this.attack(arrayOfMonsters[i])
+
+          // while (arrayOfMonsters[i].isAlive() && this.isAlive()) {
+          //   this.attack(arrayOfMonsters[i])
+          //
+          // }
+
+
+        }
+
+      }
+
+    }
+
+
+
+    let Hero1 = new Hero("superman", 100);
+
+
+    let rat = new LivingThing("Rat", 5);
+    let goblin = new LivingThing("Goblin", 30);
+    let ogre = new LivingThing("ogre", 80);
+
+    let monsters = [rat, goblin, ogre]
+
 
     //The code below should work when you are done
     console.log("A hero emerges!");
 
-    console.log("The noble " + hero.getName() + " has vowed to defeat the monsters and save the realm");
+    console.log("The noble " + Hero1.getName() + " has vowed to defeat the monsters and save the realm");
     console.log("Will they be victorious?");
 
-    hero.fight(monsters);
+    Hero1.fight(monsters);
 
-    if (hero.isAlive()) {
-        console.log("The hero, " + hero.getName() + ", prevailed!");
+    if (Hero1.isAlive()) {
+        console.log("The hero, " + Hero1.getName() + ", prevailed!");
     }
     else {
-        console.log(hero.getName() + " was bested by the monsters. We are doomed");
+        console.log(Hero1.getName() + " was bested by the monsters. We are doomed");
     }
 
 })();
